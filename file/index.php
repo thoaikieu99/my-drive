@@ -7,11 +7,28 @@
       display: block;
       margin-bottom: 10px;
     }
+
+    .back {
+      padding-bottom: 1.2rem;
+    }
   </style>
 
 </head>
 
 <body>
+
+  <?php
+  $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+  $domain = $_SERVER['HTTP_HOST'];
+
+  $project_path = str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
+
+  $base_url = $protocol . $domain . $project_path;
+  $base_url = dirname($base_url) . '/';
+  echo "<div class='back'>";
+  echo "<a  href='$base_url'>Back</a><br>";
+  echo "</div>";
+  ?>
   <div id="fileName">
     <?php
     $dir = "uploads/*.*"; // Lấy tất cả các file trong folder

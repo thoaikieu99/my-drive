@@ -89,14 +89,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .my-button:active {
             transform: scale(0.98);
         }
+
+        .back {
+            padding-bottom: 1.2rem;
+        }
     </style>
 </head>
 
 <body>
-    <div>
-        <?php
-        if (file_exists($file)) {
-            $lines = file($file);
+    <?php
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+    $domain = $_SERVER['HTTP_HOST'];
+
+    $project_path = str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
+
+    $base_url = $protocol . $domain . $project_path;
+    $base_url = dirname($base_url) . '/';
+    echo "<div class='back'>";
+    echo "<a  href='$base_url'>Back</a><br>";
+    echo "</div>";
+    ?>
+
+    <?php
+
+    if (file_exists($file)) {
+
+        $lines = file($file);
+        if (!empty($lines)) {
+            echo "<div class='back' id='pr'>";
             foreach ($lines as $line_number => $line) {
                 echo "<div class='container-grid' id='$line_number'> ";
                 echo "<div class='cot-1'>";
@@ -107,13 +127,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "</div>";
                 echo "</div>";
             }
+            echo "</div>";
         }
-        ?>
-    </div>
+    }
+    ?>
+
     <?php
-    echo $message;
+    if ($message) {
+        echo "<div class='back' id='mess'>";
+        echo $message;
+        echo "</div>";
+    }
+
     if (isset($lines[0])) {
-        echo "<button type='button' onclick='xoaSanPham()'>Delete all!</button>";
+
+        echo "<div class='back' id='deleteAll'>";
+        echo "<button type='button'  onclick='xoaSanPham()'>Delete all!</button>";
+        echo "</div>";
     }
     ?>
 
@@ -136,18 +166,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     location.href = window.location.pathname; // Tải lại trang ngay lập tức 🔄
                 });
         }
+        const buttons1 = document.getElementById('mess');
+
+        setTimeout(() => {
+            if (buttons1) {
+                buttons1.remove()
+            }
+        }, 2000);
 
         function deleteLine(id) {
             fetch('clear.php?id=' + id)
                 .then(response => response.text())
                 .then(data => {
                     const buttons = document.getElementsByClassName('container-grid');
+
                     buttons[id].remove();
+                    if (buttons.length === 0) {
+                        console.log("Danh sách đã trống hoàn toàn!");
+                        const buttons3 = document.getElementById('deleteAll');
+                        const buttons4 = document.getElementById('pr');
+                        buttons3.remove()
+                        buttons4.remove()
+
+                    }
                     Array.from(buttons).forEach((element, index) => {
                         if (index >= (id)) {
-
                             element.id = `${index}`;
-
                         }
                     });
                     // location.href = window.location.pathname; // Tải lại trang ngay lập tức 🔄
