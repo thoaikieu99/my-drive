@@ -1,3 +1,5 @@
 text/data.txt
 file/uploads/*
+!file/uploads/.gitkeep
 image/uploads/*
+!image/uploads/.gitkeep
