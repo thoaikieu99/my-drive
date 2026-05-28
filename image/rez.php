@@ -15,11 +15,11 @@ $ext = strtolower($info['extension']);
 if ($ext === 'jpg' || $ext === 'jpeg') {
     $image = imagecreatefromjpeg($file);
     header("Content-Type: image/jpeg");
-    imagejpeg($image, null, 50); // giảm chất lượng xuống 60%
+    imagejpeg($image, null, 20); // giảm chất lượng xuống 60%
 } elseif ($ext === 'png') {
     $image = imagecreatefrompng($file);
     header("Content-Type: image/png");
-    imagepng($image, null, 5); // mức nén 0–9
+    imagepng($image, null, 2); // mức nén 0–9
 } else {
     http_response_code(415);
     exit("Unsupported format");
