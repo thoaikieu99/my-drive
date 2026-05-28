@@ -641,8 +641,10 @@ if ($currentFolder != "" && is_dir($currentPath)) {
 
           <div class="image-card">
 
-            <img src="<?= $currentPath . $img ?>"
-              onclick="openModal('<?= $currentPath . $img ?>')">
+            <img alt="Mô tả ảnh" src="rez.php?file=<?= $currentPath . $img ?>"
+
+
+              onclick=" openModal('<?= $currentPath . $img ?>')">
 
             <div class="image-info">
 
