@@ -120,8 +120,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['images'])) {
       $tmpName = $_FILES['images']['tmp_name'][$i];
 
       $originalName = basename($_FILES['images']['name'][$i]);
+      // Lấy phần mở rộng
+      $extension = pathinfo($originalName, PATHINFO_EXTENSION);
 
-      $fileName = time() . "_" . rand(1000, 9999) . "_" . $originalName;
+      // Lấy tên file (không bao gồm extension)
+      $nameOnly = pathinfo($originalName, PATHINFO_FILENAME);
+      $timestamp = time(); // ví dụ: 1716901234
+      $last7 = substr($timestamp, -7);
+
+      $fileName = $nameOnly . "_" . $last7 . "_" . rand(1000, 9999) . "." . $extension;
 
       $targetFile = $currentPath . $fileName;
 
